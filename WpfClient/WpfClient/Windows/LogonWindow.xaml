@@ -1,0 +1,57 @@
+﻿<core:WindowDialogBase x:Class="WpfClient.Windows.LogonWindow"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:core="clr-namespace:WpfClient.Core"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:local="clr-namespace:WpfClient.Windows"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:viewModels="clr-namespace:WpfClient.ViewModels"
+                       xmlns:wpfClient="clr-namespace:WpfClient"
+                       Title="Авторизация"
+                       Width="300"
+                       Height="300"
+                       Icon="../Resources/login.png"
+                       Style="{StaticResource WindowStyle}"
+                       mc:Ignorable="d">
+
+    <core:WindowDialogBase.Resources />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border />
+        <TextBlock Grid.Row="0"
+                   Margin="{StaticResource DefaultMarginElement}"
+                   Text="Выберите пользователя:" />
+        <wpfClient:TulleControl Grid.Row="1"
+                                IsShow="{Binding ErrorDataLoading}"
+                                Style="{StaticResource ErrorDataLodingTulleStyle}">
+            <wpfClient:TulleControl Grid.Row="1"
+                                    IsShow="{Binding IsBusy}"
+                                    Style="{StaticResource LoadingTulleStyle}">
+                <ListBox DisplayMemberPath="FullName"
+                         ItemsSource="{Binding Users}"
+                         SelectedItem="{Binding SelectedUser}"
+                         Style="{StaticResource CommonElementStyle}" />
+            </wpfClient:TulleControl>
+        </wpfClient:TulleControl>
+
+        <DockPanel Grid.Row="2">
+            <Button Command="{Binding LoadUsersCommand}" ToolTip="Обновить данные">
+                <Image Width="20"
+                       Margin="-1"
+                       Source="../Resources/reload.png" />
+            </Button>
+            <UniformGrid HorizontalAlignment="Right"
+                         VerticalAlignment="Center"
+                         Rows="1">
+                <Button Command="{Binding OkCommand}"
+                        Content="Ok"
+                        IsDefault="True" />
+                <Button Content="Выход" IsCancel="True" />
+            </UniformGrid>
+        </DockPanel>
+    </Grid>
+</core:WindowDialogBase>

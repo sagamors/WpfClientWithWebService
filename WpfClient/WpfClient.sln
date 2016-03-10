@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClient", "WpfClient\WpfClient.csproj", "{714EDC92-9429-433D-9F94-C4D6132715AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestProtocol", "RestProtocol\RestProtocol.csproj", "{09ECBB51-7947-41DC-BFD5-35A0DE595E4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{714EDC92-9429-433D-9F94-C4D6132715AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{714EDC92-9429-433D-9F94-C4D6132715AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{714EDC92-9429-433D-9F94-C4D6132715AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{714EDC92-9429-433D-9F94-C4D6132715AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09ECBB51-7947-41DC-BFD5-35A0DE595E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09ECBB51-7947-41DC-BFD5-35A0DE595E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09ECBB51-7947-41DC-BFD5-35A0DE595E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09ECBB51-7947-41DC-BFD5-35A0DE595E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,117 @@
+﻿<core:WindowDialogBase x:Class="WpfClient.AddNewReportWindow"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
+                       xmlns:core="clr-namespace:WpfClient.Core"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:helpers="clr-namespace:WpfClient.Helpers"
+                       xmlns:local="clr-namespace:WpfClient"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:viewModels="clr-namespace:WpfClient.ViewModels"
+                       xmlns:restProtocol="clr-namespace:RestProtocol;assembly=RestProtocol"
+                       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                       Title="Создание нового отчета"
+                       Width="400"
+                       Height="300"
+                       Icon="../Resources/document_new_16x16.png"
+                       ResizeMode="NoResize"
+                       SizeToContent="Height"
+                       Style="{StaticResource WindowStyle}"
+                       mc:Ignorable="d"
+                       x:Name="AddNewReport"
+                       >
+    <Window.Resources>
+        <Style x:Key="ErrorAddNewReportDataTulleStyle" TargetType="local:TulleControl">
+            <Setter Property="TulleContentTemplate">
+                <Setter.Value>
+                    <DataTemplate DataType="viewModels:AddNewReportViewModel">
+                        <Border>
+                            <Border.Background>
+                                <SolidColorBrush Opacity="0.5" Color="Red" />
+                            </Border.Background>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ErrorDataLodingMessage}" TextAlignment="Center" />
+                                <Button Command="{Binding AddNewReportCommand}" Content="Попробовать" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel Grid.IsSharedSizeScope="True">
+        <local:TulleControl IsShow="{Binding ErrorDataLoading}" Style="{StaticResource ErrorAddNewReportDataTulleStyle}">
+            <local:TulleControl Grid.Row="1"
+                                IsShow="{Binding IsBusy}"
+                                Style="{StaticResource LoadingTulleStyle}">
+                <StackPanel>
+                    <HeaderedContentControl   Header="Название задания:">
+                        <TextBox  Style="{StaticResource CommonElementStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Header="Тип отчета:">
+                        <ComboBox DisplayMemberPath="Name"
+                                  ItemsSource="{Binding ReportParameters}"
+                                  SelectedValue="{Binding ReportParameter}"
+                                  Style="{StaticResource CommonElementStyle}" />
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Header="Объекты мониторинга:">
+                        <ListBox MaxHeight="100"
+                                 DisplayMemberPath="Name"
+                                 ItemsSource="{Binding AllMonitoringObjects}"
+                                 SelectionMode="Multiple"
+                                 Style="{StaticResource CommonElementStyle}"
+                                 helpers:ListBoxMultipleSelection.SelectedItems="{Binding MonitoringObjects, Mode=TwoWay}"
+                                 />
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Header="Время первого построения отчета:">
+                        <xctk:DateTimePicker Value="{Binding Time}" Style="{StaticResource CommonElementStyle}" />
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Header="Периодичность построения отчета:">
+                        <ComboBox DisplayMemberPath="DisplayName"
+                                  ItemsSource="{helpers:Enumeration restProtocol:ePeriodReport}"
+                                  SelectedValue="{Binding Periodicity}"
+                                  SelectedValuePath="Value"
+                                  Style="{StaticResource CommonElementStyle}" />
+                    </HeaderedContentControl>
+                    <ContentControl x:Name="ReportType"  Content="{Binding ReportParameter}">
+                        <ContentControl.ContentTemplateSelector>
+                            <helpers:ReportTypeTemplateSelector>
+                                <helpers:ReportTypeTemplateSelector.MessagesFromObjectDataTemplate>
+                                    <DataTemplate DataType="restProtocol:MessagesFromObject">
+                                        <HeaderedContentControl Header="Список датчиков:">
+                                            <ListBox DisplayMemberPath="Name"
+                                                     SelectionMode="Multiple"
+                                                     helpers:ListBoxMultipleSelection.SelectedItems="{Binding Sensors}"
+                                                     ItemsSource="{Binding DataContext.AllSensors, ElementName=ReportType}"
+                                                    />
+                                        </HeaderedContentControl>
+                                    </DataTemplate>
+                                </helpers:ReportTypeTemplateSelector.MessagesFromObjectDataTemplate>
+                                <helpers:ReportTypeTemplateSelector.TrafficAndParkingDataTemplate>
+                                    <DataTemplate DataType="restProtocol:TrafficAndParking">
+                                        <HeaderedContentControl Header="Период построения:">
+                                            <ComboBox DisplayMemberPath="DisplayName"
+                                                      ItemsSource="{helpers:Enumeration restProtocol:ePeriodReportCreation}"
+                                                      SelectedValue="{Binding PeriodReport}"
+                                                      SelectedValuePath="Value"
+                                                      Style="{StaticResource CommonElementStyle}" />
+                                        </HeaderedContentControl>
+                                    </DataTemplate>
+                                </helpers:ReportTypeTemplateSelector.TrafficAndParkingDataTemplate>
+                            </helpers:ReportTypeTemplateSelector>
+                        </ContentControl.ContentTemplateSelector>
+                    </ContentControl>
+                </StackPanel>
+            </local:TulleControl>
+        </local:TulleControl>
+        <UniformGrid HorizontalAlignment="Right"
+                     VerticalAlignment="Top"
+                     Rows="1">
+            <Button Command="{Binding OkCommand}"
+                    Content="Ok"
+                    IsDefault="True" />
+            <Button Content="Отмена" IsCancel="True" />
+        </UniformGrid>
+    </StackPanel>
+</core:WindowDialogBase>
